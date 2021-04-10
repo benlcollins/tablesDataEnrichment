@@ -1,7 +1,8 @@
 /**
  * Global Variables
  */
-const API_KEY = '';
+const API_KEY = ''; // <-- enter your Mattermark API key here
+const TABLE_NAME = ''; // <-- enter your Google Tables table ID here
 
 
 /**
@@ -9,7 +10,7 @@ const API_KEY = '';
  */
 function mattermarkCompany(companyName) {
 	  
-	companyName = 'facebook'
+	companyName = 'facebook'; // example
 
 	// set up the api
 	const base = 'https://api.mattermark.com/';
@@ -27,10 +28,12 @@ function mattermarkCompany(companyName) {
 /**
  * function to retrive company details
  */
-function mattermarkCompanyDetails(companyID) {
+function mattermarkCompanyDetails(tablesData,recordID) {
 
-	//const companyDomain = companyName + '.com';
-	companyID = '163595';
+	// parse incoming data from Google Tables
+	//const companyID = tablesData.Company;
+	const rowId = recordID;
+	const companyID = '159108'; // example
 
 	// set up the api
 	const base = 'https://api.mattermark.com/';
@@ -48,54 +51,33 @@ function mattermarkCompanyDetails(companyID) {
 	const companyName = data.name;
 	const companyDescription = data.description;
 	const companyEmployees = data.employees;
-	/*const companyEmployeesSixMonthsAgo = data.employees_6_months_ago;
+	const companyEmployeesSixMonthsAgo = data.employees_6_months_ago;
 	const websiteUniques = data.website_uniques;
 	const mobileDownloads = data.mobile_downloads;
 	const fundingStage = data.stage;
 	const totalFunding = data.total_funding;
 	const city = data.city;
 	const state = data.state;
-	const country = data.country;*/
+	const country = data.country;
 
 	const enrichmentData = {
-      'Company Name': companyName,
-      'Company Description': companyDescription,
-      'Company Employees': companyEmployees
+		'Company Name': companyName,
+		'Company Description': companyDescription,
+		'Company Employees': companyEmployees,
+		'Company Employees 6-Months Ago': companyEmployeesSixMonthsAgo,
+		'Website Uniques': websiteUniques,
+		'Mobile Downloads': mobileDownloads,
+		'Funding Stage': fundingStage,
+		'Total Funding': totalFunding,
+		'City': city,
+		'State': state,
+		'Country': country
     };
     console.log(enrichmentData);
-    
-    //Area120Tables.Tables.Rows.patch({values: enrichmentData}, rowName);
+
+
+	// send data back to Google Tables
+    const rowName = 'tables/' + TABLE_NAME + '/rows/' + rowId;
+    Area120Tables.Tables.Rows.patch({values: enrichmentData}, rowName);
 
 }
-
-/*
-COMPANY SEARCH:
-
-{
-	"meta":{
-		"total_record_count":2,
-		"total_pages":1,
-		"current_page":1,
-		"per_page":2},
-	"companies":[
-		{
-			"id":"163595",
-			"url":"https://api.mattermark.com/companies/163595",
-			"company_name":"Facebook",
-			"domain":"facebook.com"
-		},
-		{
-			"id":"14083821",
-			"url":"https://api.mattermark.com/companies/14083821",
-			"company_name":"Facebook",
-			"domain":"nhanhieulogo.com"
-		}
-	],
-	"total_companies":2,
-	"page":1,
-	"per_page":2
-}
-
-COMPANY DETAILS:
-
-*/
