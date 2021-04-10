@@ -63,12 +63,12 @@ function mattermarkCompanyDetails(tablesData,recordID) {
 	const enrichmentData = {
 		'Company Name': companyName,
 		'Company Description': companyDescription,
-		'Company Employees': companyEmployees,
-		'Company Employees 6-Months Ago': companyEmployeesSixMonthsAgo,
-		'Website Uniques': websiteUniques,
-		'Mobile Downloads': mobileDownloads,
+		'Company Employees': parseInt(companyEmployees),
+		'Company Employees 6-Months Ago': parseInt(companyEmployeesSixMonthsAgo),
+		'Website Uniques': parseInt(websiteUniques) || 0,
+		'Mobile Downloads': parseInt(mobileDownloads) || 0,
 		'Funding Stage': fundingStage,
-		'Total Funding': totalFunding,
+		'Total Funding': parseInt(totalFunding),
 		'City': city,
 		'State': state,
 		'Country': country
