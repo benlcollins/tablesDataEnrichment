@@ -8,7 +8,7 @@ const TABLE_NAME = ''; // <-- enter your Google Tables table ID here
 /**
  * function to retrive logo url
  */
-function retrieveCompanyLogo(companyWebsite) {
+/*function retrieveCompanyLogo(companyWebsite) {
 
 	// for testing
 	companyWebsite = 'bench.co'
@@ -19,7 +19,46 @@ function retrieveCompanyLogo(companyWebsite) {
 
 	// call the api
 	const response = UrlFetchApp.fetch(url);
-	console.log(response);
+	const blobImage = response.getBlob();
+
+	let file = {
+	title: companyWebsite + '.png',
+	mimeType: 'image/png'
+	};
+
+	//const obj = JSON.parse(response.getContentText());
+	//file = Drive.Files.insert(file,blobImage);
+	DriveApp.createFile(blobImage);
+
+}*/
+
+/**
+ * function to retrive logo url
+ */
+function retrieveCompanyLogoURL(companyWebsite) {
+
+	// for testing
+	companyWebsite = 'bench.co'
+
+	// setup the api
+	const base = 'https://s2.googleusercontent.com/s2/favicons?domain=';
+	const url = base + companyWebsite + '&sz=32';
+
+	return url;
+
+  /*const logoObj = [{
+    'name': url,
+    'id': companyWebsite,
+    'mimeType': 'image/png'
+  }];
+
+  const enrichmentData = {
+    'Logo': logoObj
+  };
+
+  // send data back to Google Tables
+    const rowName = 'tables/' + TABLE_NAME + '/rows/' + recordID;
+    Area120Tables.Tables.Rows.patch({values: enrichmentData}, rowName);*/
 
 }
 
@@ -89,12 +128,18 @@ function mattermarkCompanyDetails(companyID,recordID) {
 	const city = data.city;
 	const state = data.state;
 	const country = data.country;
+	const revenueRange = data.revenue_range;
+
+	// add company logo data
+	const companyLogo = retrieveCompanyLogoURL(companyWebsite);
 
 	const enrichmentData = {
-		'Company Website': companyWebsite,
-		'Company Description': companyDescription,
-		'Company Employees': parseInt(companyEmployees),
-		'Company Employees 6-Months Ago': parseInt(companyEmployeesSixMonthsAgo),
+		'Logo': companyLogo,
+		'Website': companyWebsite,
+		'Description': companyDescription,
+		'Employees': parseInt(companyEmployees),
+		'Employees 6-Months Ago': parseInt(companyEmployeesSixMonthsAgo),
+		'Revenue Range': revenueRange,
 		'Website Uniques': parseInt(websiteUniques) || 0,
 		'Mobile Downloads': parseInt(mobileDownloads) || 0,
 		'Funding Stage': fundingStage,
@@ -111,3 +156,14 @@ function mattermarkCompanyDetails(companyID,recordID) {
     Area120Tables.Tables.Rows.patch({values: enrichmentData}, rowName);
 
 }
+
+/*
+API call to area120tables.tables.rows.patch failed with error: 
+Field Logo, type=file_attachment_list must be specified as an array of objects 
+with members name (string), id (string), mimeType (string)
+*/
+
+
+
+
+
