@@ -6,11 +6,32 @@ const TABLE_NAME = ''; // <-- enter your Google Tables table ID here
 
 
 /**
+ * function to retrive logo url
+ */
+function retrieve companyLogo(companyWebsite) {
+
+	// for testing
+	companyWebsite = 'bench.co'
+
+	// setup the api
+	const base = 'https://s2.googleusercontent.com/s2/favicons?domain=';
+	const url = base + companyWebsite;
+
+	// call the api
+	const response = UrlFetchApp.fetch(url);
+	console.log(response);
+
+}
+
+
+
+
+/**
  * function to retrieve company data from Mattermark
  */
-function mattermarkCompany(companyName) {
+function mattermarkCompany(companyName,recordID) {
 	  
-	companyName = 'facebook'; // example
+	//companyName = 'facebook'; // example
 
 	// set up the api
 	const base = 'https://api.mattermark.com/';
@@ -20,20 +41,29 @@ function mattermarkCompany(companyName) {
 
 	// call the api
 	const response = UrlFetchApp.fetch(url);
-	console.log(response.getResponseCode());
-	console.log(response.getContentText());
+	const data = JSON.parse(response.getContentText());
+
+	// parse the data
+	const companies = data.companies;
+	const firstCompany = companies[0];
+	const companyID = firstCompany.id;
+
+	console.log(companies);
+	console.log(firstCompany);
+	console.log(companyID);
+
+	// call the api to get specific company details
+	mattermarkCompanyDetails(companyID,recordID);
 	
 }
 
 /**
  * function to retrive company details
  */
-function mattermarkCompanyDetails(tablesData,recordID) {
+function mattermarkCompanyDetails(companyID,recordID) {
 
-	// parse incoming data from Google Tables
-	//const companyID = tablesData.Company;
-	const rowId = recordID;
-	const companyID = '159108'; // example
+	// example data from Google Tables
+	//const companyID = '159108';
 
 	// set up the api
 	const base = 'https://api.mattermark.com/';
@@ -48,7 +78,7 @@ function mattermarkCompanyDetails(tablesData,recordID) {
 	//console.log(response.getContentText());
 
 	// parse data
-	const companyName = data.name;
+	const companyWebsite = data.website;
 	const companyDescription = data.description;
 	const companyEmployees = data.employees;
 	const companyEmployeesSixMonthsAgo = data.employees_6_months_ago;
@@ -61,7 +91,7 @@ function mattermarkCompanyDetails(tablesData,recordID) {
 	const country = data.country;
 
 	const enrichmentData = {
-		'Company Name': companyName,
+		'Company Website': companyWebsite,
 		'Company Description': companyDescription,
 		'Company Employees': parseInt(companyEmployees),
 		'Company Employees 6-Months Ago': parseInt(companyEmployeesSixMonthsAgo),
@@ -77,7 +107,7 @@ function mattermarkCompanyDetails(tablesData,recordID) {
 
 
 	// send data back to Google Tables
-    const rowName = 'tables/' + TABLE_NAME + '/rows/' + rowId;
+    const rowName = 'tables/' + TABLE_NAME + '/rows/' + recordID;
     Area120Tables.Tables.Rows.patch({values: enrichmentData}, rowName);
 
 }
