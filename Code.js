@@ -8,7 +8,7 @@ const TABLE_NAME = ''; // <-- enter your Google Tables table ID here
 /**
  * function to retrive logo url
  */
-function retrieve companyLogo(companyWebsite) {
+function retrieveCompanyLogo(companyWebsite) {
 
 	// for testing
 	companyWebsite = 'bench.co'
