@@ -6,11 +6,6 @@
         "userSymbol": "Area120Tables",
         "version": "v1alpha1",
         "serviceId": "area120tables"
-      },
-      {
-        "userSymbol": "Drive",
-        "version": "v2",
-        "serviceId": "drive"
       }
     ]
   },
