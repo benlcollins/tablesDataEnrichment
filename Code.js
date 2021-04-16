@@ -4,34 +4,6 @@
 const API_KEY = ''; // <-- enter your Mattermark API key here
 const TABLE_NAME = ''; // <-- enter your Google Tables table ID here
 
-
-/**
- * function to retrive logo url
- */
-/*function retrieveCompanyLogo(companyWebsite) {
-
-	// for testing
-	companyWebsite = 'bench.co'
-
-	// setup the api
-	const base = 'https://s2.googleusercontent.com/s2/favicons?domain=';
-	const url = base + companyWebsite;
-
-	// call the api
-	const response = UrlFetchApp.fetch(url);
-	const blobImage = response.getBlob();
-
-	let file = {
-	title: companyWebsite + '.png',
-	mimeType: 'image/png'
-	};
-
-	//const obj = JSON.parse(response.getContentText());
-	//file = Drive.Files.insert(file,blobImage);
-	DriveApp.createFile(blobImage);
-
-}*/
-
 /**
  * function to retrive logo url
  */
@@ -46,24 +18,7 @@ function retrieveCompanyLogoURL(companyWebsite) {
 
 	return url;
 
-  /*const logoObj = [{
-    'name': url,
-    'id': companyWebsite,
-    'mimeType': 'image/png'
-  }];
-
-  const enrichmentData = {
-    'Logo': logoObj
-  };
-
-  // send data back to Google Tables
-    const rowName = 'tables/' + TABLE_NAME + '/rows/' + recordID;
-    Area120Tables.Tables.Rows.patch({values: enrichmentData}, rowName);*/
-
 }
-
-
-
 
 /**
  * function to retrieve company data from Mattermark
@@ -156,14 +111,3 @@ function mattermarkCompanyDetails(companyID,recordID) {
     Area120Tables.Tables.Rows.patch({values: enrichmentData}, rowName);
 
 }
-
-/*
-API call to area120tables.tables.rows.patch failed with error: 
-Field Logo, type=file_attachment_list must be specified as an array of objects 
-with members name (string), id (string), mimeType (string)
-*/
-
-
-
-
-
