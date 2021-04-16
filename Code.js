@@ -25,7 +25,7 @@ function retrieveCompanyLogoURL(companyWebsite) {
  */
 function mattermarkCompany(companyName,recordID) {
 	  
-	//companyName = 'facebook'; // example
+	// companyName = 'facebook'; // example
 
 	// set up the api
 	const base = 'https://api.mattermark.com/';
@@ -57,7 +57,7 @@ function mattermarkCompany(companyName,recordID) {
 function mattermarkCompanyDetails(companyID,recordID) {
 
 	// example data from Google Tables
-	//const companyID = '159108';
+	// companyID = '159108';
 
 	// set up the api
 	const base = 'https://api.mattermark.com/';
@@ -104,7 +104,6 @@ function mattermarkCompanyDetails(companyID,recordID) {
 		'Country': country
     };
     console.log(enrichmentData);
-
 
 	// send data back to Google Tables
     const rowName = 'tables/' + TABLE_NAME + '/rows/' + recordID;
